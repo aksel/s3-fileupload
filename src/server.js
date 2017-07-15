@@ -23,8 +23,6 @@ const verify = (req, res, next) => {
   }
 };
 
-app.get('/ping', (req, res) => res.send('hello world'));
-
 app.post('/', upload.single('image'), verify, (req, res, next) => {
   s3.upload(req.file.buffer, `${v4()}_${req.file.originalname}`)
     .then(url => res.send(url))
