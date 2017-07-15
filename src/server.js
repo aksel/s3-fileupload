@@ -1,5 +1,7 @@
 const express = require('express');
 const multer = require('multer');
+const s3 = require('./s3');
+const v4 = require('node-uuid').v4;
 
 const PORT = process.env.PORT || 5000;
 const MAX_FILE_SIZE = 10000000;
@@ -24,8 +26,9 @@ const verify = (req, res, next) => {
 app.get('/ping', (req, res) => res.send('hello world'));
 
 app.post('/', upload.single('image'), verify, (req, res, next) => {
-  console.log(req.file);
-  res.sendStatus(200);
+  s3.upload(req.file.buffer, `${v4()}_${req.file.originalname}`)
+    .then(url => res.send(url))
+    .catch(next);
 });
 
 // eslint-disable-next-line no-unused-vars
