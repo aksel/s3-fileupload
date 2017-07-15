@@ -1,7 +1,9 @@
 const AWS = require('aws-sdk');
 
+// Make sure to specify your bucket name in the package.json
 const BUCKET = process.env.BUCKET;
 
+// Also make sure your access keys are filled out.
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
