@@ -13,9 +13,17 @@ const upload = multer({
   fileFilter: (req, file, cb) => cb(null, MIME_TYPES.test(file.mimetype)),
 });
 
+const verify = (req, res, next) => {
+  if (req.file) {
+    next();
+  } else {
+    next({ status: 400 });
+  }
+};
+
 app.get('/ping', (req, res) => res.send('hello world'));
 
-app.post('/', upload.single('image'), (req, res, next) => {
+app.post('/', upload.single('image'), verify, (req, res, next) => {
   console.log(req.file);
   res.sendStatus(200);
 });
