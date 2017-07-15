@@ -19,7 +19,7 @@ const verify = (req, res, next) => {
   if (req.file) {
     next();
   } else {
-    next({ status: 400 });
+    next({ statusCode: 400 });
   }
 };
 
@@ -31,8 +31,7 @@ app.post('/', upload.single('image'), verify, (req, res, next) => {
     .catch(next);
 });
 
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => res.sendStatus(err.status ? err.status : 500));
+app.use((err, req, res, next) => res.status(err.statusCode ? err.statusCode : 500).json({ err }));
 
 const server = app.listen(PORT);
 
